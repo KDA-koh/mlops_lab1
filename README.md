@@ -1,2 +1,2 @@
-# mlops_lab1
-govno
+ne # mlops_lab1
+
