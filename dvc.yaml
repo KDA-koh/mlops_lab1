@@ -1,15 +1,41 @@
 stages:
-  no_bday:
-    cmd: python3 scripts/delete_no_bday.py
+  sc1:
+    cmd: python3 scripts/script1.py
     deps:
-    - data/raw/Advanced.csv
-    - scripts/delete_no_bday.py
+    - data/raw/Sport car price.csv
+    - scripts/script1.py
     outs:
     - data/stage1
-  nba:
-    cmd: python3 scripts/delete_non_nba.py
+  sc2:
+    cmd: python3 scripts/script2.py
     deps:
-    - data/stage1/Advanced.csv
-    - scripts/delete_non_nba.py
+    - data/stage1/Sport car price.csv
+    - scripts/script2.py
     outs:
     - data/stage2/
+  sc3:
+    cmd: python3 scripts/script3.py
+    deps:
+    - data/stage2/Sport car price.csv
+    - scripts/script3.py
+    outs:
+    - data/stage3
+  split:
+    cmd: python3 scripts/train_test_split.py
+    deps:
+    - data/stage3/Sport car price.csv
+    - scripts/train_test_split.py
+    params:
+    - split.split_ratio
+    outs:
+    - data/stage4
+  train:
+    cmd: python3 scripts/model_learn.py
+    deps:
+    - data/stage4/train.csv
+    - scripts/model_learn.py
+    params:
+    - train.max_depth
+    - train.seed
+    outs:
+    - model.pkl

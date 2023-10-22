@@ -34,3 +34,74 @@ stages:
       md5: 0c28d4fbfcc402ab22e8face41334141.dir
       size: 267665
       nfiles: 1
+  sc1:
+    cmd: python3 scripts/script1.py
+    deps:
+    - path: data/raw/Sport car price.csv
+      hash: md5
+      md5: 70225d016f392f28508453bc1c0c8750
+      size: 49190
+    - path: scripts/script1.py
+      hash: md5
+      md5: e6690b7335669887e33660187e882224
+      size: 426
+    outs:
+    - path: data/stage1
+      hash: md5
+      md5: cc47506848f7d3446c37342cf56d7eaa.dir
+      size: 48737
+      nfiles: 1
+  sc2:
+    cmd: python3 scripts/script2.py
+    deps:
+    - path: data/stage1/Sport car price.csv
+      hash: md5
+      md5: f57c6f6403aa8fb5e27789842f615412
+      size: 48737
+    - path: scripts/script2.py
+      hash: md5
+      md5: a4c45336dff03713ca90834c0a1a5123
+      size: 377
+    outs:
+    - path: data/stage2/
+      hash: md5
+      md5: d2c6f1149bb8e9556a0556e46e0636f1.dir
+      size: 267300
+      nfiles: 1
+  sc3:
+    cmd: python3 scripts/script3.py
+    deps:
+    - path: data/stage2/Sport car price.csv
+      hash: md5
+      md5: 1a4e28395187262171ddff4a82954c2a
+      size: 267300
+    - path: scripts/script3.py
+      hash: md5
+      md5: b57f62ff8a62f36e4995aa122586f98d
+      size: 381
+    outs:
+    - path: data/stage3
+      hash: md5
+      md5: 65bd9edb0295ad4c27291d1f4fba68d9.dir
+      size: 1319921
+      nfiles: 1
+  split:
+    cmd: python3 scripts/train_test_split.py
+    deps:
+    - path: data/stage3/Sport car price.csv
+      hash: md5
+      md5: 377c6cba81c2cece5bbcdaaa8b61d270
+      size: 1319921
+    - path: scripts/train_test_split.py
+      hash: md5
+      md5: 1416aaf3b2efbcfd1ba289277792393e
+      size: 685
+    params:
+      params.yaml:
+        split.split_ratio: 0.3
+    outs:
+    - path: data/stage4
+      hash: md5
+      md5: c0b48ec0696b415456a8ca114340e097.dir
+      size: 1313633
+      nfiles: 2
