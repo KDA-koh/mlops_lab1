@@ -1,0 +1,15 @@
+stages:
+  no_bday:
+    cmd: python3 scripts/delete_no_bday.py
+    deps:
+    - data/raw/Advanced.csv
+    - scripts/delete_no_bday.py
+    outs:
+    - data/stage1
+  nba:
+    cmd: python3 scripts/delete_non_nba.py
+    deps:
+    - data/stage1/Advanced.csv
+    - scripts/delete_non_nba.py
+    outs:
+    - data/stage2/

@@ -1,0 +1,36 @@
+schema: '2.0'
+stages:
+  no_bday:
+    cmd: python3 scripts/delete_no_bday.py
+    deps:
+    - path: data/raw/Advanced.csv
+      hash: md5
+      md5: 9606f1c1ab064f27f974d079689461ad
+      size: 4420783
+    - path: scripts/delete_no_bday.py
+      hash: md5
+      md5: 57f9af27022fa564735fa4b6e6c2f0b2
+      size: 285
+    outs:
+    - path: data/stage1
+      hash: md5
+      md5: 4dc95d560482532f3cfa4c8432c3ced7.dir
+      size: 393699
+      nfiles: 1
+  nba:
+    cmd: python3 scripts/delete_non_nba.py
+    deps:
+    - path: data/stage1/Advanced.csv
+      hash: md5
+      md5: 8441b99aaa5eb864aee9da816a6cdb2f
+      size: 393699
+    - path: scripts/delete_non_nba.py
+      hash: md5
+      md5: e5c6d1711f7481e0db1a7aa8c7f1d7b3
+      size: 284
+    outs:
+    - path: data/stage2/
+      hash: md5
+      md5: 0c28d4fbfcc402ab22e8face41334141.dir
+      size: 267665
+      nfiles: 1
