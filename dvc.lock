@@ -43,21 +43,21 @@ stages:
       size: 49190
     - path: scripts/script1.py
       hash: md5
-      md5: e6690b7335669887e33660187e882224
-      size: 426
+      md5: 3b1bab61c9ebcc0a783fd3b88b9e12c4
+      size: 1455
     outs:
     - path: data/stage1
       hash: md5
-      md5: cc47506848f7d3446c37342cf56d7eaa.dir
-      size: 48737
+      md5: 6c37e8831cb14a7f92deaa17b1a96a89.dir
+      size: 46751
       nfiles: 1
   sc2:
     cmd: python3 scripts/script2.py
     deps:
     - path: data/stage1/Sport car price.csv
       hash: md5
-      md5: f57c6f6403aa8fb5e27789842f615412
-      size: 48737
+      md5: 5f1e80e96798f75875d5d630f8032ceb
+      size: 46751
     - path: scripts/script2.py
       hash: md5
       md5: a4c45336dff03713ca90834c0a1a5123
@@ -65,16 +65,16 @@ stages:
     outs:
     - path: data/stage2/
       hash: md5
-      md5: d2c6f1149bb8e9556a0556e46e0636f1.dir
-      size: 267300
+      md5: 142022daab82920b49e3fd87ac098333.dir
+      size: 265314
       nfiles: 1
   sc3:
     cmd: python3 scripts/script3.py
     deps:
     - path: data/stage2/Sport car price.csv
       hash: md5
-      md5: 1a4e28395187262171ddff4a82954c2a
-      size: 267300
+      md5: 9de5c34355cc1f9d2a3620e16fb0564b
+      size: 265314
     - path: scripts/script3.py
       hash: md5
       md5: b57f62ff8a62f36e4995aa122586f98d
@@ -82,26 +82,67 @@ stages:
     outs:
     - path: data/stage3
       hash: md5
-      md5: 65bd9edb0295ad4c27291d1f4fba68d9.dir
-      size: 1319921
+      md5: ec1a41cb5561f95c2c48b37f4ce55150.dir
+      size: 1317935
       nfiles: 1
   split:
     cmd: python3 scripts/train_test_split.py
     deps:
     - path: data/stage3/Sport car price.csv
       hash: md5
-      md5: 377c6cba81c2cece5bbcdaaa8b61d270
-      size: 1319921
+      md5: 2872ea20c7a5ba1b7ea80ff63f4e7a8e
+      size: 1317935
     - path: scripts/train_test_split.py
       hash: md5
-      md5: 1416aaf3b2efbcfd1ba289277792393e
-      size: 685
+      md5: ee4e8095bab8cad56927d41858c9ed17
+      size: 661
     params:
       params.yaml:
         split.split_ratio: 0.3
     outs:
     - path: data/stage4
       hash: md5
-      md5: c0b48ec0696b415456a8ca114340e097.dir
-      size: 1313633
+      md5: 331847971d283343f1ba3ca207bac2ff.dir
+      size: 1316007
       nfiles: 2
+  train:
+    cmd: python3 scripts/model_learn.py
+    deps:
+    - path: data/stage4/train.csv
+      hash: md5
+      md5: 6f4f4960636df99d10cedb713f3a9aa0
+      size: 919203
+    - path: scripts/model_learn.py
+      hash: md5
+      md5: 89af956dbb2b85190c8b56a1fc740001
+      size: 631
+    params:
+      params.yaml:
+        train.max_depth: 15
+        train.seed: 42
+    outs:
+    - path: data/models/model.pkl
+      hash: md5
+      md5: 018e57c36847782a9207f93cb1bd4428
+      size: 445886
+  evaluate:
+    cmd: python3 scripts/evaluate.py
+    deps:
+    - path: data/stage4/test.csv
+      hash: md5
+      md5: 9d45f90d972091f53400232e9aa18fef
+      size: 396804
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: 9d4c2e5d0780d66ae5d982ce83e34ab4
+      size: 926
+    params:
+      params.yaml:
+        train.max_depth: 15
+        train.max_features: 15
+        train.min_samples_leaf: 10
+    outs:
+    - path: metrics/eval.json
+      hash: md5
+      md5: e13e5c044abdb8f5b175e35b3d64d60e
+      size: 30

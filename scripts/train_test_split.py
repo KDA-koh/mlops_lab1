@@ -16,5 +16,5 @@ y = scp["Price (in USD)"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = p_split_ratio, random_state=1)
 
-pd.concat([y_train,X_train],axis=1).to_csv("data/stage4/train.csv",header=None,index=None)
-pd.concat([y_test,X_test],axis=1).to_csv("data/stage4/test.csv",header=None,index=None)
+pd.concat([y_train,X_train],axis=1).to_csv("data/stage4/train.csv",index=None)
+pd.concat([y_test,X_test],axis=1).to_csv("data/stage4/test.csv",index=None)

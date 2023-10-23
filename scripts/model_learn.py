@@ -6,18 +6,22 @@ import pickle
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 
-
-os.makedirs("data/models",exist_ok=True)
+dir_path = "data/models"
+os.makedirs(dir_path,exist_ok=True)
 params = yaml.safe_load(open("params.yaml"))["train"]
 p_seed = params["seed"]
 p_max_depth = params["max_depth"]
 
 scp = pd.read_csv("data/stage4/train.csv")
-X = scp.drop(columns=["Price (in USD)", "Torque (lb-ft)"])
+scp.info()
+
+X = scp.drop(columns=["Price (in USD)"])
 y = scp["Price (in USD)"]
 
 clf = DecisionTreeClassifier(max_depth=p_max_depth, random_state=p_seed)
 clf.fit(X,y)
 
-with open("data/models","wb") as fd:
+model = "model.pkl"
+full_model_path = os.path.join(dir_path,model)
+with open(full_model_path,"wb") as fd:
     pickle.dump(clf,fd)

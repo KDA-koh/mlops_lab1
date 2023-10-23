@@ -38,4 +38,16 @@ stages:
     - train.max_depth
     - train.seed
     outs:
-    - model.pkl
+    - data/models/model.pkl
+  evaluate:
+    cmd: python3 scripts/evaluate.py
+    deps:
+    - data/stage4/test.csv
+    - scripts/evaluate.py
+    params:
+    - train.max_depth
+    - train.max_features
+    - train.min_samples_leaf
+    metrics:
+    - metrics/eval.json:
+        cache: false
